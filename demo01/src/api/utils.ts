@@ -1,5 +1,3 @@
-import {c} from "vite/dist/node/types.d-FdqQ54oU";
-
 function getRandomInt(Max, Min) {
     let Range = Max - Min;
     let Rand = Math.random();
@@ -37,14 +35,14 @@ function legal_judge(type: string, condition: { value_start: any; value_end: any
     let value_end = condition.value_end;
     if (type === 'scope') {
         value_start = Number(value_start)
-        if (isNaN(value_start)) {
+        if (isNaN(value_start) || value_start == "") {
             return false
         }
         value_end = Number(value_end)
-        if (isNaN(value_end)) {
+        if (isNaN(value_end) || value_end == "") {
             return false
         }
-        if (value_start > value_end){
+        if (value_start > value_end) {
             return false
         }
     }

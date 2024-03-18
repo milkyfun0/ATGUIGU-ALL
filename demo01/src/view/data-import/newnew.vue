@@ -82,7 +82,7 @@
   </div>
 </template>
 <script>
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {get_filter_type, legal_judge} from "../../api/utils.ts";
 
 export default {
@@ -91,10 +91,10 @@ export default {
   data() {
     return {
       open_flag: ref(true),
-      condition: {
+      condition: reactive({
         value_start: "",
         value_end: ""
-      },
+      }),
       filter_type: get_filter_type()
     }
   },
@@ -120,14 +120,12 @@ export default {
       } else {
         return null
       }
-      console.log(this.condition.value_start)
-      console.log(this.condition.value_end)
-      this.$emit("conditionUpdate", {
-        column: this.column,
-        column_filter_type: this.column_filter_type,
-        condition: this.condition
-      })
+      this.$emit("conditionUpdate", null)
+      this.condition.value_start = ""
+      this.condition.value_end = ""
+      console.log("emit conditionupdate() over");
     },
   }
+
 }
 </script>

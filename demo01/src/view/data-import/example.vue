@@ -3,7 +3,7 @@
   <div style="margin-bottom: 10px" v-if="dynamicTags.length !=0">
     <el-text tag="b"> 条件:</el-text>
     <el-tag v-for="tag in dynamicTags"
-            :key="tag"
+            :key="tag.id"
             :size="'default'"
             :hit="true"
             closable
@@ -13,7 +13,7 @@
             effect="dark"
             round
     >
-      {{ tag }}
+      {{ tag.getInfo() }}
     </el-tag>
   </div>
   <div>
@@ -33,7 +33,7 @@
           :min-width="100"
       >
         <template #header>
-          <newnew v-if="click_value==p" :column="p" :column_filter_type="'666'"
+          <newnew v-if="click_value==p" :column="p" :column_filter_type="'scope'"
                   :select_items="select_item"></newnew>
         </template>
       </el-table-column>
@@ -63,16 +63,18 @@
 
 <script lang="ts" setup>
 import {get_filter_type, legal_judge, zip} from '../../api/utils'
-import {nextTick, ref} from 'vue'
+import {nextTick, reactive, ref} from 'vue'
 import {ElMessage, ElMessageBox, ElInput} from 'element-plus'
 import type {Action} from 'element-plus'
 import {getTableData, getTableProps} from "../../api/test-data"
 import customHeader from "./customHeader.vue";
 import newnew from "./newnew.vue"
 
+const filter_type = get_filter_type()
 let click_value = ref("")
 let pageSize3 = ref(20)
 let currentPage3 = ref(1)
+
 
 function handleSizeChange(value) {
   // 页面大小改变
@@ -98,13 +100,48 @@ for (let i = 1; i < row_labels.length; i++) {
 }
 const props = zip(row_labels, fixed)
 
+class Tag {
+  static tag_flag = 0;
+  id: number;
+  column: string
+  column_filter_type: string
+  condition: {
+    value_start: string
+    value_end: string
+  }
+
+  constructor({column, column_filter_type, condition}) {
+    this.id = Tag.tag_flag++
+    this.column = column;
+    this.column_filter_type = column_filter_type;
+    this.condition = condition;
+  }
+
+  getInfo() {
+    if (this.column_filter_type === filter_type['text']) {
+      return `${this.column}：包含 \"${this.condition.value_start}\"`
+    }
+    if (this.column_filter_type === filter_type['scope']) {
+      return `${this.column}：${this.condition.value_start}-${this.condition.value_end}`
+    }
+    if (this.column_filter_type === filter_type['date']) {
+      return `${this.column}：${this.condition.value_start}-${this.condition.value_end}`
+    }
+    if (this.column_filter_type === filter_type['select']) {
+      return `${this.column}：${this.condition.value_start}`
+    }
+    return `error ${this.column}：undefined`
+  }
+}
+
+
 const inputValue = ref('')
-const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
+const dynamicTags: Tag[] = reactive([])
 const inputVisible = ref(false)
 const InputRef = ref<InstanceType<typeof ElInput>>()
 const select_item = [[0, '0'], [1, '1']]
 const handleClose = (tag) => {
-  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
+  dynamicTags.splice(dynamicTags.indexOf(tag), 1)
   console.log(`delete tag: ${tag}`)
 }
 
@@ -123,18 +160,9 @@ function conditionUpdate(data) {
    * @param data {column, column_filter_type, condition}
    * des: 用户传来筛选条件来更新表格
    */
-  let {column, column_filter_type, condition} = data
-  let filter_type = get_filter_type()
-  if (column_filter_type === filter_type['text']) {
-  }
-  if (column_filter_type === filter_type['scope']) {
-  }
-  if (column_filter_type === filter_type['date']) {
-  }
-  if (column_filter_type === filter_type['select']) {
-  }
+  // dynamicTags.push(new Tag(data))
+  console.log(dynamicTags.length)
   console.log("conditionUpdate " + data)
-
 }
 
 function more_about(row: any) {
@@ -154,7 +182,8 @@ function more_about(row: any) {
 
 function sortOnChange({column, prop, order}) {
   console.log(`等待后端响应 column.label:${column.label} prop:${prop} order:${order}`);
+  this.$emit('show')
   return tableData
-}
 
+}
 </script>

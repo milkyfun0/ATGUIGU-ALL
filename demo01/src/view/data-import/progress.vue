@@ -29,7 +29,7 @@
     </span>
     <template #tip>
       <div class="el-upload__tip">
-        jpg/png files with a size less than 500KB.
+        {{ getInfoText() }}
       </div>
     </template>
   </el-upload>
@@ -80,6 +80,7 @@ import {computed, ref} from 'vue'
 import {Minus, Plus} from '@element-plus/icons-vue'
 import {getRandomArray} from "../../api/utils"
 import {ElMessage, ElMessageBox, UploadFile, UploadFiles, UploadInstance, UploadRawFile} from 'element-plus'
+import {isEqual} from "lodash";
 
 
 import type {UploadProps, UploadUserFile} from 'element-plus'
@@ -88,7 +89,6 @@ const fileList = ref<UploadUserFile[]>([])
 const part1 = ref<number>(0)
 const part2 = ref<number>(0)
 const part3 = ref<number>(0)
-const duration = computed(() => Math.floor(part1.value / 10))
 
 const part1_1 = getRandomArray(20, 99, 1)
 const part2_1 = getRandomArray(20, 99, 1)
@@ -96,6 +96,8 @@ const part3_1 = getRandomArray(20, 99, 1)
 let page_judge = true
 let button_switch = ref<number>(0)
 let upload_switch = ref<number>(0)
+let accept_suffix = [".text", '.csv', ".jpg"]
+let max_file_size = 10
 
 /**
  *
@@ -103,6 +105,15 @@ let upload_switch = ref<number>(0)
  *
  */
 const uploadRef = ref<UploadInstance>()
+
+function getInfoText() {
+  let info = "格式：" + accept_suffix[0];
+  for (let i = 1; i < accept_suffix.length; i++) {
+    info += '/' + accept_suffix[i]
+  }
+  info += '；大小：小于' + max_file_size + " MB"
+  return info
+}
 
 function uploadAllFiles() {
   uploadRef.value!.submit()
@@ -113,21 +124,68 @@ function uploadHttpRequest(data) {
   console.log("uploadHttpRequest " + data)
 }
 
-
 const handOnChange: UploadProps["onChange"] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
   // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
-  if (uploadFile in uploadFiles) {
-    console.log("--------------")
-  }
-  // 不能上传相同的文件
-  console.log("onChange " + uploadFile.url)
+  if (uploadFile.status == "ready") {
+    console.log(uploadFile.name)
+    let count = 0
+    for (let i = 0; i < uploadFiles.length; i++) {
+      if (isEqual(uploadFile.name, uploadFiles[i].name)) {
+        count++
+      }
+    }
+    if (count == 2) {
+      uploadFiles.pop()
+      ElMessage({
+        type: 'warning',
+        duration: 2000,
+        message: '不要上传相同的文件',
+      })
+    }
+    count = 0
+    for (let i = 0; i < accept_suffix.length; i++) {
+      if (uploadFile.name.indexOf(accept_suffix[i]) != -1) {
+        count++
+      }
+    }
+    if (count != 1) {
+      uploadFiles.pop()
+      ElMessage({
+        type: 'warning',
+        duration: 2000,
+        message: '不支持该类型文件',
+      })
+    }
+    if (uploadFile.size / 1024 / 1024 > max_file_size) {
+      uploadFiles.pop()
+      ElMessage({
+        type: 'warning',
+        duration: 2000,
+        message: '文件超过规定大小',
+      })
+    }
 
+
+    // 不能上传相同的文件
+    console.log("onChange " + uploadFile.type)
+
+  }
 }
 const handSuccess: UploadProps['onSuccess'] = (response) => {
   console.log('success：' + response)
+  ElMessage({
+    type: 'success',
+    duration: 2000,
+    message: '上传成功',
+  })
   button_switch.value = 1
 }
 const handError: UploadProps["onError"] = (error, files, uploadFiles) => {
+  ElMessage({
+    type: 'error',
+    duration: 2000,
+    message: '上传失败',
+  })
   console.log("error")
 
 }
@@ -158,20 +216,10 @@ const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
   console.log("onRemove " + uploadFiles)
 }
 const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
-  // 删除文件之前的钩子，参数为上传的文件和文件列表， 若返回 false 或者返回 Promise 且被 reject，则停止删除。
-  // if (!(uploadFile in uploadFiles)) {
-  //   return true
-  // }
   return ElMessageBox.confirm(
-      `Cancel the transfer of ${uploadFile.name} ?`
+      `是否删除文件: ${uploadFile.name} ?`
   ).then(
       () => {
-        console.log("beforeRemove")
-        // if (uploadFiles.length == 0) {
-        //   button_switch.value = 0;
-        // }else {
-        //   console.log(uploadFiles.length)
-        // }
         return true
       },
       () => false
