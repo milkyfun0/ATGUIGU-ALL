@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!--
+        form 表单标签
+            action 定义数据的提交地址
+                1 url, 2 相对路径, 3 绝对路径
+            
+            method 定义数据的提交方式
+                GET - 效率高点
+                    1. 参数会以键值对的形式放在url后提交  url?key=value&key=value&key=value
+                    2. 暴露在地址栏，相对不安全
+                    3. 长度有限，只能字符，不能提交文件
+                POST
+                    1. 参数默认不放在url后
+                    2. 数据不会直接暴露在地址栏上相对安全
+                    3. 单独打包。请求体发送，提交数据量大，数据类型可以用多种
+        
+        表单项标签
+        表单项标签一定要定义name属性，该属性用于明确提交时的参数名
+        表单项还需要定义value属性，该属性用于明确提交时的实参
+        input
+            type 输入信息的表单项类型
+                text
+                password 
+                submit
+                reset
+                radio 单选框 多个单选框使用相同的Name值，为互斥
+                checkbox 多选框
+                hidden 隐藏域 不显示在页面上，但提交时会有
+                file 提交文件
+        
+        textarea 文本框 双标签
+        select 下拉框
+            option 选项
+        
+    -->
+    <form action="./01firstPage.html" , method="get">
+
+        <!-- #提交特定信息 但是不希望改变
+        
+            readonly 只读 但是提交
+            disabled 不可用 但是不提交
+        -->
+        <input type="hidden" name="id" value="123">
+        PID：<input type="text" name="pid" , value="1234" , readonly> <br>
+        TID：<input type="text" name="tid" , value="1234" , disabled> <br>
+
+
+        用户名：<input type="text" , name="用户名" , value="default" /> <br>
+        密码：<input type="password" , name="密码" , value="123456" /> <br>
+
+        性别：
+        <input type="radio" , name="gender" , value="男" checked="True">男
+        <input type="radio" , name="gender" , value="女">女 <br>
+        爱好：
+        <input type="checkbox" , name="爱好" value="1" checked> 足球
+        <input type="checkbox" , name="爱好" value="2"> 篮球
+        <input type="checkbox" , name="乒乓球" value="3"> 乒乓球 <br>
+
+        个人简介：
+        <textarea name="intro"></textarea> <br>
+        籍贯：
+        <select name="籍贯">
+            <option value="1">京</option>
+            <option value="2">津</option>
+            <option value="3">冀</option>
+            <option value="0" selected>请选择</option>
+        </select>
+        <br>
+        上传头像：
+        <input type="file">
+        <br>
+
+        <input type="submit" , value="登录" />
+        <input type="reset" , value="重置" />
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--- 导入vue的依赖  -->
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-text="message" v-bind:style="colorStyle">hello vue</h1>
+        <h1>{{message}}</h1>
+        <button @click="fun1">change</button>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                // 定义数据
+                let message = 'hello2'
+                let colorStyle = { "background-color": "yellow" }
+                function fun1() {
+                    alert(" ")
+                }
+                return {
+                    message,
+                    colorStyle,
+                    fun1
+                } // 在return中返回的的方法才能够和HTML关联
+            },
+        })
+        // 将APP对象指定到元素上，加载VUE对象
+        app.mount("#app") 
+    </script>
+</body>
+
+</html>

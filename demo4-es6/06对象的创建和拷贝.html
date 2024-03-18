@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class Pserson {
+            name; // 私有属性
+            age;
+            get getname() {
+                this.name
+            }
+            set sername(name) {
+
+            }
+            eat() {
+
+            }
+            // 静态方法
+            static sum(a, b) {
+
+            }
+            // 构造器
+            constructor(name, age) {
+                this.name = name
+                this.age = age
+            }
+        }
+        class Student extends Person {
+            socre;
+            study() {
+                console.log(`dddd${super.name}`)
+            }
+        }
+
+
+
+
+
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //1. let只有在当前代码块有效代码块. 代码块、函数、全局
+        // let 有作用域
+        //2. 不能重复声明
+        var i = 10
+        var i = 1
+        let j = 10
+        // let j = 10
+        //3. 不存在变量提升（先声明，在使用）
+
+        //4、不会成为window的属性
+        var a = 10  // 成为window的属性
+        console.log(window.a)
+
+        //5. 循环中推荐使用
+
+
+        // const
+        //1.声明场景语法,建议变量名大写区分
+        //2.常量值不可以改动
+        //3.和let一样，块儿作用域
+        //4.对应数组和对象元素修改，不算常量修改，修改值，不修改地址
+
+        // 多行模板字符串
+        let city = "北京"
+        let str = `<ul>
+                        <li></li>
+                        <li></li>
+                        <li>${city}</li>
+                   </ul>`
+        console.log(str)
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

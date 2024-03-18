@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .ins {
+            color: red;
+        }
+    </style>
+    <script>
+        /**
+        1. 获得document dom树
+            window.document
+        2. 从document中获得要操作的元素
+            1. 直接获取 getElementById getElementsByTagName getElementsByName getElementsByClassName
+            2. 间接获取 .children .firstElementChild .lastElementChild .parentElement .previousElementSibling .nextElementSibling
+        3. 对元素进行操作
+            1. 操作元素的属性 
+                元素名.属性 = ""
+            2. 操作元素的样式
+                元素名.style.样式="" 
+                原始样式名中的"-"符号 要转换驼峰式  background-color > backgroundColor
+            3. 操作元素的文本
+                innerText: 
+                innerHTML:可以识别html代码
+            4. 创建删除元素
+                创建：
+                    .createElement()  appendChild(new) insertBefore(new, base) replaceChild(new, old)
+                    .remove() 谁调用删除谁  removeChild(child)
+        */
+        function addCs() {
+            // 创建一个新的子元素
+            var csli = document.createElement("li") //<li></li>
+            // 设置子元素属性和文本
+            csli.id = "cs"
+            csli.innerText = "长沙"
+            // 将子元素放入父元素中
+            var cityul = document.getElementById("city")
+            cityul.appendChild(csli)
+            console.log("1213")
+
+        }
+        function addCsBeforeSz() {
+            // 创建一个新的子元素
+            var csli = document.createElement("li") //<li></li>
+
+            // 设置子元素属性和文本
+            csli.id = "cs"
+            csli.innerText = "长沙"
+            // 将子元素放入父元素中
+            var cityul = document.getElementById("city")
+            var szul = document.getElementById("sz")
+
+            cityul.insertBefore(csli, szul)  // 新元素, 参照元素
+            console.log("1213")
+
+        }
+        function replaceSz() {
+            // 创建一个新的子元素
+            var csli = document.createElement("li") //<li></li>
+
+            // 设置子元素属性和文本
+            csli.id = "cs"
+            csli.innerText = "长沙"
+            // 将子元素放入父元素中
+            var cityul = document.getElementById("city")
+            var szul = document.getElementById("sz")
+
+            cityul.replaceChild(csli, szul)  // 新元素, 旧元素
+            console.log("1213")
+
+        }
+        function removeSz() {
+            var szul = document.getElementById("sz")
+            szul.remove()
+            console.log("1213")
+
+        }
+        function clearCity() {
+            var cityul = document.getElementById("city")
+
+            /* var fc =cityul.firstChild
+            while(fc != null ){
+                fc.remove()
+                fc =cityul.firstChild
+            } */
+            cityul.innerHTML = ""
+            //cityul.remove()
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+    <ul id="city">
+        <li id="bj">北京</li>
+        <li id="sh">上海</li>
+        <li id="sz">深圳</li>
+        <li id="gz">广州</li>
+    </ul>
+    <!-- 目标1 在城市列表的最后添加一个子标签  <li id="cs">长沙</li>  -->
+    <button onclick="addCs()">增加长沙</button>
+    <!-- 目标2 在城市列表的深圳前添加一个子标签  <li id="cs">长沙</li>  -->
+    <button onclick="addCsBeforeSz()">在深圳前插入长沙</button>
+    <!-- 目标3  将城市列表的深圳替换为  <li id="cs">长沙</li>  -->
+    <button onclick="replaceSz()">替换深圳</button>
+    <!-- 目标4  将城市列表删除深圳  -->
+    <button onclick="removeSz()">删除深圳</button>
+    <!-- 目标5  清空城市列表  -->
+    <button onclick="clearCity()">清空</button>
+
+</body>
+
+</html>

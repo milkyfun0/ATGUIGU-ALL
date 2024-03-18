@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .ins {
+            color: red;
+        }
+    </style>
+    <script>
+        /**
+        1. 获得document dom树
+            window.document
+        2. 从document中获得要操作的元素
+            1. 直接获取 getElementById getElementsByTagName getElementsByName getElementsByClassName
+            2. 间接获取 .children .firstElementChild .lastElementChild .parentElement .previousElementSibling .nextElementSibling
+        3. 对元素进行操作
+            1. 操作元素的属性 
+                元素名.属性 = ""
+            2. 操作元素的样式
+                元素名.style.样式="" 
+                原始样式名中的"-"符号 要转换驼峰式  background-color > backgroundColor
+            3. 操作元素的文本
+                innerText: 
+                innerHTML:可以识别html代码
+            4. 删除元素
+
+        */
+        function fun1() {
+            var in1 = document.getElementById("in1")
+            console.log(in1.type)
+            console.log(in1.value)
+            in1.type = "button"
+            in1.value = "hi"
+        } function fun2() {
+            var in1 = document.getElementById("in1")
+            console.log(in1.style)
+            in1.style.color = "green"
+            in1.style.borderRadius = "5px"
+        }
+        function fun3() {
+            var in1 = document.getElementById("div01")
+            // in1.innerText = "<h1>hi</h1>"
+            in1.innerHTML = "<h1>hi</h1>"
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+    <div id="div01">
+        hello
+    </div>
+    <hr>
+    <input type="text" value="hello" id="in1" class="ins">
+    <hr>
+    <button onclick="fun1()">变</button>
+    <button onclick="fun2()">变颜色</button>
+    <button onclick="fun3()">操作文本</button>
+
+</body>
+
+</html>

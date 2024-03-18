@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /*
+        1. 元素选择器 
+            语法： 标签名{}
+            某些同名的不希望使用某些样式， 某些不同名也要用样式
+        
+        2. id选择器 根据id选择作用的元素
+            id 就有唯一性
+            语法 #id号{} 1 对 1  id每个元素应该是不同的，但是可以相同
+
+        3. classx选择器 根据class值确定
+            语法 .class{} 属性值 多对多
+
+        
+
+        
+        
+        */
+        /* input {
+            width: 60px;
+            height: 40px;
+            background-color: greenyellow;
+            color: white;
+            font-size: 20px;
+            font-family: default;
+            border: 2px solid green;
+            border-radius: 5px;
+        } */
+        /* #b1 {
+            width: 60px;
+            height: 40px;
+            background-color: greenyellow;
+            color: white;
+            font-size: 20px;
+            font-family: default;
+            border: 2px solid green;
+            border-radius: 5px;
+        } */
+
+        .shapeClass {
+            width: 80px;
+            height: 40px;
+            border-radius: 5px;
+        }
+
+        .colorClass {
+            background-color: greenyellow;
+            color: white;
+            border: 3px solid green;
+        }
+
+        .fontClass {
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 30px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <input id="b1" class="shapeClass colorClass" type="button" value="按钮1">
+    <input id="b2" class="fontClass" type="button" value="按钮2">
+    <input id="b3" class="shapeClass" type="button" value="按钮3">
+    <input id="b4" type="button" value="按钮4">
+    <button id="b5"> 按钮5 </button>
+</body>
+
+</html>

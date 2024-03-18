@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        /**
+         * 回调函数 一种未执行的函数 
+         *  resolve(): pending -> resolved
+         *  reject() : pending -> reject 
+         */
+        let promise = new Promise(function (resolve, reject) {
+            // 这里代码
+            console.log("function invoked")
+            resolve("hhh")
+        })
+        console.log("other coder1")
+        // let promise2 = promise.then(
+        //     function (value) { // pending -> resolve
+        //         console.log("promise sucesss" + value)
+        //     },
+        //     function () { // pending -> reject
+        //         console.log("promise failed")
+        //     }
+        // )
+        // console.log("other coder2")
+
+
+        // promise2.catch(
+        //     function () {
+
+        //     }// 当promise 状态为reject 或者promise出现异常时执行的函数
+        // )
+
+        let promise2 = promise.then(
+            function (value) { // pending -> resolve
+                console.log("promise sucesss" + value)
+            }
+        ).catch(
+            function () { // pending -> reject
+                console.log("promise failed")
+            }
+            // 当promise 状态为reject 或者promise出现异常时执行的函数
+        )
+        console.log("other coder2")
+
+
+
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

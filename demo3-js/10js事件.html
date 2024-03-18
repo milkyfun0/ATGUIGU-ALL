@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function fun1() {
+            // alert("单机了")
+            console.log("单机了")
+        }
+        function fun2() {
+            // alert("单机了2")
+            console.log("单机了2")
+
+        }
+        function fun3() {
+            console.log("双击了")
+        }
+        /**
+         * 1. 事件的绑定方式
+         *      1. 通过元素的属性绑定 onclick
+         *      2. 通过DOM编程动态绑定 
+         *     注意事项：
+         *          一个事件可以绑定多个函数
+         *          一个元素可绑定多个事件
+         * 2. 常见的事件：
+         *      1. 鼠标事件 onclick ondbclock onmouseover onmousemove onmouseleave
+         *      2. 键盘事件 onkeydown onkeyup
+         *      3. 表单事件 onfocus onblur onchange onsubmit onreset
+         *      4. 页面加载事件 onload 页面加载完毕事件
+         * 3.事件的触发
+         *      1. 行为触发
+         *      2. DOM编程触发
+         * 
+         */
+        function fun4() {
+            console.log("鼠标悬停了")
+        }
+        function fun5() {
+            console.log("鼠标移动了")
+        }
+        function fun6() {
+            console.log("鼠标移离开了")
+        }
+        function fun7() {
+            console.log("键盘按下了")
+        }
+        function fun8() {
+            console.log("键盘抬起了")
+        }
+
+        function testFocus() {
+            console.log("获得焦点了")
+        }
+        function testblur() {
+            console.log("失去焦点了")
+        }
+        function testChange(value) {
+            console.log("内容改变了:" + value)
+        }
+        function testChange2(value) {
+            console.log("选项改变了" + value)
+        }
+        function testSubmit() {
+            // alert("表单发生了改变")
+            // 有机会阻止表单提交
+            if (!confirm("确定提交表单吗？"))
+                // event.preventDefault()
+                return false // 反回 false onsubmit绑定return
+            return true
+        }
+        function testReset() {
+            alert("表单清空了")
+        }
+
+
+        window.onload = function () {
+            // 通过dom获得需要操作的元素
+            // var btn = document.getElementById("btn1")
+            // btn.onclick = function () {
+            //     alert("按钮单击了")
+            // }
+
+            var div1 = document.getElementById("btn1")
+            div1.onclick = function () {
+                document.getElementById("d1").style.backgroundColor = "red"
+            }
+
+        }
+
+
+
+
+    </script>
+    <style>
+        .div1 {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="d1" class="div1"></div>
+
+    <hr>
+
+    <button id="btn1">按钮</button>
+
+    <hr>
+
+
+    <form action="./01js引入的方式.html" onsubmit=" return testSubmit()" onreset="testReset()">
+        用户昵称:
+        <input type="text" name="relName" onfocus="testFocus()" onblur="testblur()" onchange="testChange(this.value)">
+        <br>
+        登录账号:
+        <input type="text" name="LoginName" id=""><br>
+        选择籍贯
+        <select name="" id="" onchange="testChange2(this.value)">
+            <option value="1"> 北京</option>
+            <option value="2"> 上海</option>
+            <option value="3"> 广州</option>
+        </select>
+        <br>
+        <input type="submit" value="注册">
+        <input type="reset" value="清空">
+    </form>
+
+
+    <input type="button" value="按钮" onclick="fun1(), fun2()" ondblclick="fun3()">
+    <br>
+    <!-- <img src="./img/2.png" onmouseover="fun4()" onmousemove="fun5()" onmouseleave="fun6()"> -->
+    <input type="text" name="" onkeydown="fun7()" onkeyup="fun8()">
+</body>
+
+</html>

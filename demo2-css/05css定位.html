@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        .interDiv {
+            width: 100px;
+            height: 100px;
+            border: 1px solid blue;
+            /* display: inline; */
+            /*block 块元素 inline 行元素*/
+        }
+
+        .b1 {
+            background-color: greenyellow;
+            position: fixed;
+            top: 30;
+            left: 200px;
+        }
+
+        .b2 {
+            background-color: rebeccapurple;
+        }
+
+        .b3 {
+            background-color: rgb(20, 144, 175);
+        }
+
+        /*
+        position:
+            static   默认
+            absolute 绝对
+            relative 相对元素原本的位置 offset 其他的不浮动
+            fixed    相对浏览器原本的位置 浮动 
+        
+        left
+        right 是相对的，一般只设置一个
+        top
+        bottom 是相对的，一般只设置一个
+        */
+    </style>
+
+</head>
+
+<body>
+    <div class="interDiv b1"> 框1</div>
+    <div class="interDiv b2">框2</div>
+    <div class="interDiv b3">框3</div>
+</body>
+
+</html>
