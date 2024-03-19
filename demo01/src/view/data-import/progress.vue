@@ -78,7 +78,7 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue'
 import {Minus, Plus} from '@element-plus/icons-vue'
-import {getRandomArray} from "../../api/utils"
+import {getRandomArray} from "@/api/utils"
 import {ElMessage, ElMessageBox, UploadFile, UploadFiles, UploadInstance, UploadRawFile} from 'element-plus'
 import {isEqual} from "lodash";
 
@@ -107,6 +107,9 @@ let max_file_size = 10
 const uploadRef = ref<UploadInstance>()
 
 function getInfoText() {
+  /**
+   * 上传时的文字提醒
+   */
   let info = "格式：" + accept_suffix[0];
   for (let i = 1; i < accept_suffix.length; i++) {
     info += '/' + accept_suffix[i]
@@ -116,16 +119,29 @@ function getInfoText() {
 }
 
 function uploadAllFiles() {
-  uploadRef.value!.submit()
+  /**
+   * 提交所有文件
+   */
+  uploadRef.value.submit()
 }
 
 function uploadHttpRequest(data) {
+  /**
+   * 提交按钮后的响应
+   */
   button_switch.value = 1
   console.log("uploadHttpRequest " + data)
+  for (let i = 0; i < this.fileList.length; i++) {
+    this.fileList.pop()
+  }
 }
 
-const handOnChange: UploadProps["onChange"] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-  // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+function handOnChange(uploadFile: UploadFile, uploadFiles: UploadFiles) {
+  /**
+   * 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+   * 经过的检查，
+   */
+
   if (uploadFile.status == "ready") {
     console.log(uploadFile.name)
     let count = 0
@@ -142,6 +158,7 @@ const handOnChange: UploadProps["onChange"] = (uploadFile: UploadFile, uploadFil
         message: '不要上传相同的文件',
       })
     }
+
     count = 0
     for (let i = 0; i < accept_suffix.length; i++) {
       if (uploadFile.name.indexOf(accept_suffix[i]) != -1) {
@@ -156,6 +173,7 @@ const handOnChange: UploadProps["onChange"] = (uploadFile: UploadFile, uploadFil
         message: '不支持该类型文件',
       })
     }
+
     if (uploadFile.size / 1024 / 1024 > max_file_size) {
       uploadFiles.pop()
       ElMessage({
@@ -164,13 +182,9 @@ const handOnChange: UploadProps["onChange"] = (uploadFile: UploadFile, uploadFil
         message: '文件超过规定大小',
       })
     }
-
-
-    // 不能上传相同的文件
-    console.log("onChange " + uploadFile.type)
-
   }
 }
+
 const handSuccess: UploadProps['onSuccess'] = (response) => {
   console.log('success：' + response)
   ElMessage({
@@ -193,6 +207,7 @@ const handBeforeUpload: UploadProps["beforeUpload"] = (rawFile: UploadRawFile) =
   // 上传文件之前的钩子，参数为上传的文件， 若返回false或者返回 Promise 且被 reject，则停止上传。
   console.log("beforeUpload " + "uid" + rawFile.uid + "webkitRelativePath " + rawFile.webkitRelativePath)
   console.log("lastModified" + rawFile.lastModified)
+  return true
   // return
 }
 

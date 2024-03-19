@@ -29,7 +29,7 @@ function get_filter_type() {
 
 function legal_judge(type: string, condition: { value_start: any; value_end: any; }) {
     if (type === 'text') {
-        return false
+        return true
     }
     let value_start = condition.value_start;
     let value_end = condition.value_end;

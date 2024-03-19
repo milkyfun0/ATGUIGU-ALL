@@ -34,7 +34,7 @@
       >
         <template #header>
           <newnew v-if="click_value==p" :column="p" :column_filter_type="'scope'"
-                  :select_items="select_item"></newnew>
+                  :select_items="select_item" @condition-update="conditionUpdate"></newnew>
         </template>
       </el-table-column>
       <el-table-column label="Info" width="150" :align="'center'">
@@ -66,9 +66,9 @@ import {get_filter_type, legal_judge, zip} from '../../api/utils'
 import {nextTick, reactive, ref} from 'vue'
 import {ElMessage, ElMessageBox, ElInput} from 'element-plus'
 import type {Action} from 'element-plus'
-import {getTableData, getTableProps} from "../../api/test-data"
+import {getTableData, getTableData2, getTableProps} from "../../api/test-data"
 import customHeader from "./customHeader.vue";
-import newnew from "./newnew.vue"
+import newnew from "./TableFilter.vue"
 
 const filter_type = get_filter_type()
 let click_value = ref("")
@@ -92,7 +92,7 @@ function log() {
 
 
 const row_labels = getTableProps()
-const tableData = getTableData()
+const tableData = getTableData2()
 const fixed = Array(row_labels.length)
 fixed[0] = true
 for (let i = 1; i < row_labels.length; i++) {
@@ -122,10 +122,10 @@ class Tag {
       return `${this.column}：包含 \"${this.condition.value_start}\"`
     }
     if (this.column_filter_type === filter_type['scope']) {
-      return `${this.column}：${this.condition.value_start}-${this.condition.value_end}`
+      return `${this.column}：${this.condition.value_start} - ${this.condition.value_end}`
     }
     if (this.column_filter_type === filter_type['date']) {
-      return `${this.column}：${this.condition.value_start}-${this.condition.value_end}`
+      return `${this.column}：${this.condition.value_start} - ${this.condition.value_end}`
     }
     if (this.column_filter_type === filter_type['select']) {
       return `${this.column}：${this.condition.value_start}`
@@ -133,7 +133,6 @@ class Tag {
     return `error ${this.column}：undefined`
   }
 }
-
 
 const inputValue = ref('')
 const dynamicTags: Tag[] = reactive([])
@@ -146,7 +145,7 @@ const handleClose = (tag) => {
 }
 
 function headClick(column, event) {
-  console.log(`${column.prop}`)
+  console.log(`handClick ${column.label}`)
   click_value.value = column.label
 }
 
@@ -160,7 +159,8 @@ function conditionUpdate(data) {
    * @param data {column, column_filter_type, condition}
    * des: 用户传来筛选条件来更新表格
    */
-  // dynamicTags.push(new Tag(data))
+  let {column, column_filter_type, condition} = data
+  dynamicTags.push(new Tag(data))
   console.log(dynamicTags.length)
   console.log("conditionUpdate " + data)
 }
@@ -182,8 +182,7 @@ function more_about(row: any) {
 
 function sortOnChange({column, prop, order}) {
   console.log(`等待后端响应 column.label:${column.label} prop:${prop} order:${order}`);
-  this.$emit('show')
+  // this.$emit('show')
   return tableData
-
 }
 </script>
