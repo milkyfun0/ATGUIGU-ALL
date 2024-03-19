@@ -83,7 +83,7 @@
 </template>
 <script>
 import {reactive, ref} from "vue";
-import {get_filter_type, legal_judge} from "@/api/utils.ts";
+import {get_filter_type, legal_judge} from "../../api/utils.ts";
 
 export default {
   name: "TableFilter",

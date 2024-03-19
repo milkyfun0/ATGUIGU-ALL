@@ -28,7 +28,7 @@
           :fixed="fixed"
           :width="150"
           :align="'center'"
-          :sortable="'custom'"
+          :sortable="false"
           :min-width="100"
       >
         <template #header>
@@ -165,7 +165,7 @@ export default {
        * @param:value Array
        * 当用户对表格的后面进行选中时，返回的行数
        */
-      console.log("handleSelectionChange " + newSelection.length)
+      console.log("handleSelectionChange" + newSelection)
     },
     handleCurrentChange(currentRow: any, oldCurrentRow: any) {
       /**
