@@ -14,8 +14,8 @@
       :on-success="this.handSuccess"
       :on-error="this.handError"
       :on-change="this.handOnChange"
-      :before-remove="beforeRemove"
-      :on-remove="handleRemove"
+      :before-remove="this.beforeRemove"
+      :on-remove="this.handleRemove"
       :http-request="this.uploadHttpRequest"
   >
     <!--    <el-button type="primary">Click to upload</el-button>-->
@@ -38,7 +38,7 @@
       <el-progress
           :text-inside="true"
           :stroke-width="20"
-          :percentage="part1"
+          :percentage="this.process_value_1"
           status="success"
           show-text
       >
@@ -47,7 +47,7 @@
       <el-progress
           :text-inside="true"
           :stroke-width="20"
-          :percentage="part2"
+          :percentage="this.process_value_2"
           status="success"
           show-text
       >
@@ -56,7 +56,7 @@
       <el-progress
           :text-inside="true"
           :stroke-width="20"
-          :percentage="part3"
+          :percentage=" this.process_value_3"
           status="success"
           show-text
       >
@@ -70,11 +70,10 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import {ref} from "vue";
-import type {UploadFile, UploadProps, UploadUserFile} from "element-plus";
+import {UploadFile, UploadProps, UploadUserFile} from "element-plus";
 import {ElMessage, ElMessageBox, UploadFiles, UploadInstance, UploadRawFile} from "element-plus";
-import {isEqual} from "lodash";
 import {getRandomArray} from "@/api/utils.js";
 
 export default {
@@ -83,11 +82,12 @@ export default {
   emits: [],
   data() {
     return {
-      process_value_1: ref<number>(), // 第一个进度条进度
-      process_value_2: ref<number>(), // 第二个进度条进度
-      process_value_3: ref<number>(), // 第三个进度条进度
-      fileList: ref<UploadUserFile[]>([]), // 上传队列
       uploadRef: ref<UploadInstance>(), // 上传行为
+      fileList: ref<UploadUserFile[]>([]), // 上传队列
+
+      process_value_1: ref<number>(0), // 第一个进度条进度 ts ref在进行参数传递时会以number形式传入，需要使用reactive
+      process_value_2: ref<number>(0), // 第二个进度条进度
+      process_value_3: ref<number>(0), // 第三个进度条进度
       page_judge: true,
       button_switch: ref<number>(0),
       upload_switch: ref<number>(0),
@@ -98,11 +98,24 @@ export default {
     }
   },
   methods: {
+    getInfoText() {
+      /**
+       * 上传时的文字提醒
+       */
+      let info = "格式：" + this.accept_suffix[0];
+      for (let i = 1; i < this.accept_suffix.length; i++) {
+        info += '/' + this.accept_suffix[i]
+      }
+      info += '；大小：小于' + this.max_file_size + " MB"
+      return info
+    },
+
     uploadAllFiles() {
       /**
        * 提交所有文件
        */
-      this.uploadRef.value.submit()
+      console.log(this.uploadRef)
+      this.$refs.uploadRef.submit()
     },
     handlePreview(uploadFile: UploadFile) {
       //点击文件列表中已上传的文件时的钩子
@@ -129,7 +142,7 @@ export default {
         duration: 2000,
         message: '上传成功',
       })
-      this.button_switch.value = 1
+      this.button_switch = 1
     },
     handError(error, files, uploadFiles) {
       ElMessage({
@@ -150,7 +163,7 @@ export default {
         console.log(uploadFile.name)
         let count = 0
         for (let i = 0; i < uploadFiles.length; i++) {
-          if (isEqual(uploadFile.name, uploadFiles[i].name)) {
+          if (uploadFile.name === uploadFiles[i].name) {
             count++
           }
         }
@@ -164,7 +177,7 @@ export default {
         }
 
         count = 0
-        for (let i = 0; i < accept_suffix.length; i++) {
+        for (let i = 0; i < this.accept_suffix.length; i++) {
           if (uploadFile.name.indexOf(this.accept_suffix[i]) !== -1) {
             count++
           }
@@ -190,7 +203,7 @@ export default {
     },
     handleRemove(file: UploadFile, uploadFiles: UploadFiles) {
       if (uploadFiles.length === 0) {
-        this.button_switch.value = 0;
+        this.button_switch = 0;
       }
       console.log("onRemove " + file)
       console.log("onRemove " + uploadFiles)
@@ -209,7 +222,7 @@ export default {
       /**
        * 提交按钮后的响应
        */
-      this.button_switch.value = 1
+      this.button_switch = 1
       console.log("uploadHttpRequest " + data)
       for (let i = 0; i < this.fileList.length; i++) {
         this.fileList.pop()
@@ -219,35 +232,36 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms))
     }
     ,
-    async control(process, array) {
+    async control({process, array}) {
       for (let i = 0; i < array.length; i++) {
         await this.sleep(75);
-        process.value = array[i];
+        process = array[i];
+        console.log(this.process_value_1)
         if (this.page_judge === false) {
-          process.value = 0
+          process = 0
           return null
         }
       }
-      process.value = 100
+      process = 100
     },
     async start() {
       this.page_judge = true
-      this.button_switch.value = 2
-      this.upload_switch.value = 1
+      this.button_switch = 2
+      this.upload_switch = 1
       if (this.page_judge) {
-        await this.control(this.process_value_1, this.process_1_array);
-        await this.control(this.process_value_2, this.process_2_array);
-        await this.control(this.process_value_3, this.process_3_array);
+        await this.control({process: this.process_value_1, array: this.process_1_array});
+        await this.control({process: this.process_value_2, array: this.process_2_array});
+        await this.control({process: this.process_value_3, array: this.process_3_array});
         this.page_judge = false;
       }
     },
     cancel() {
       this.page_judge = false
-      this.process_value_1.value = 0
-      this.process_value_2.value = 0
-      this.process_value_3.value = 0
-      this.upload_switch.value = 0
-      this.button_switch.value = 0
+      this.process_value_1 = 0
+      this.process_value_2 = 0
+      this.process_value_3 = 0
+      this.upload_switch = 0
+      this.button_switch = 0
     }
 
   }

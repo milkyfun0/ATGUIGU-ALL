@@ -80,7 +80,6 @@ import {computed, ref} from 'vue'
 import {Minus, Plus} from '@element-plus/icons-vue'
 import {getRandomArray} from "@/api/utils"
 import {ElMessage, ElMessageBox, UploadFile, UploadFiles, UploadInstance, UploadRawFile} from 'element-plus'
-import {isEqual} from "lodash";
 
 
 import type {UploadProps, UploadUserFile} from 'element-plus'
@@ -122,7 +121,7 @@ function uploadAllFiles() {
   /**
    * 提交所有文件
    */
-  uploadRef.value.submit()
+  uploadRef.value!.submit()
 }
 
 function uploadHttpRequest(data) {
@@ -146,7 +145,7 @@ function handOnChange(uploadFile: UploadFile, uploadFiles: UploadFiles) {
     console.log(uploadFile.name)
     let count = 0
     for (let i = 0; i < uploadFiles.length; i++) {
-      if (isEqual(uploadFile.name, uploadFiles[i].name)) {
+      if (uploadFile.name === uploadFiles[i].name) {
         count++
       }
     }
