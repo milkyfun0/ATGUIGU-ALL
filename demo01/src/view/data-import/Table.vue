@@ -49,7 +49,7 @@
       <el-table-column type="selection" width="55" :fixed="'right'"/>
     </el-table>
     <el-pagination
-        style="margin-top : 10px; text-align:center"
+        style="margin-top : 10px;margin-left: 20px; text-align:center"
         v-model:current-page="this.page_id"
         v-model:page-size="this.page_size"
         :small=true
