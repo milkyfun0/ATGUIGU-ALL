@@ -257,9 +257,11 @@ export default {
         await this.control(this.process_value_1, this.process_1_array);
         await this.control(this.process_value_2, this.process_2_array);
         await this.control(this.process_value_3, this.process_3_array);
+        if(this.page_judge){
+          this.processComplete()
+        }
         this.page_judge = false;
       }
-      this.processComplete()
     },
     cancel() {
       this.page_judge = false
