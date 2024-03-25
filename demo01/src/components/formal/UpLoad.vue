@@ -1,7 +1,6 @@
 <template>
   <h3>历史文本导入</h3>
   <el-upload
-      style="margin-left: 10px"
       v-model:file-list="this.fileList"
       ref="uploadRef"
       class="upload-demo"
@@ -34,9 +33,10 @@
   </el-upload>
   <h3>预处理</h3>
 
-  <div class="demo-progress">
+  <div class="div_progress">
     <div>
       <el-progress
+          class="progress"
           :text-inside="true"
           :stroke-width="20"
           :percentage="this.process_value_1.value"
@@ -46,6 +46,7 @@
         <el-text truncated class="font-style">数据清洗({{ this.process_value_1.value }}%)</el-text>
       </el-progress>
       <el-progress
+          class="progress"
           :text-inside="true"
           :stroke-width="20"
           :percentage="this.process_value_2.value"
@@ -55,6 +56,7 @@
         <el-text truncated class="font-style">特征提取({{ this.process_value_2.value }}%)</el-text>
       </el-progress>
       <el-progress
+          class="progress"
           :text-inside="true"
           :stroke-width="20"
           :percentage=" this.process_value_3.value"
@@ -277,13 +279,19 @@ export default {
 }
 </script>
 <style scoped>
-.demo-progress .el-progress--line {
+.div_progress .el-progress--line {
   margin-bottom: 15px;
   max-width: 600px;
 }
-
+.progress{
+  width: auto;
+}
 .font-style {
   font-weight: bold;
   color: #2c3e50;
+}
+.upload-demo{
+  margin-left: 10px;
+  width: 45%;
 }
 </style>

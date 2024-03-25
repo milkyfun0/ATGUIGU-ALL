@@ -6,7 +6,7 @@
   <el-scrollbar>
     <el-menu
         default-active="2"
-        class="el-menu-vertical-demo"
+        class="menu"
         :unique-opened="true"
         :router="true"
         :collapse="this.isCollapse"
@@ -94,10 +94,10 @@ export default {
   }
 
 }
+
 </script>
 <style scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: auto;
-  min-height: 400px;
+.menu {
+  height: 100vh;
 }
 </style>
