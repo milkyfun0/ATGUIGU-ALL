@@ -1,20 +1,18 @@
 <template>
   <div class="common-layout">
-    <el-container class="container">
-      <el-aside class="aside">
-        <AppLayout/>
-      </el-aside>
+    <el-container>
+      <el-header>Header</el-header>
       <el-container>
-        <el-header class="header">Header</el-header>
-        <el-main class="main">
-          Main
+        <el-aside width="200px">Aside</el-aside>
+        <AppMenu></AppMenu>
+        <el-main>
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 <script lang="ts">
-import AppMenu from "@/layout/AppMenu.vue";
 
 export default {
   name: "AppLayout",
